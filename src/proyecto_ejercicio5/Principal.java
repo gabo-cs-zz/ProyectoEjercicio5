@@ -5,6 +5,8 @@
  */
 package proyecto_ejercicio5;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author GABRIEL
@@ -40,8 +42,8 @@ public class Principal extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtDescCaja = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cmdBorrar = new javax.swing.JButton();
+        cmdCalcular = new javax.swing.JButton();
         txtMontoT = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
 
@@ -67,6 +69,12 @@ public class Principal extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("MONTOS DE DESCUENTOS:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+
+        txtSueldo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSueldoKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtSueldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 220, 30));
 
         txtDescSegS.setEditable(false);
@@ -90,20 +98,30 @@ public class Principal extends javax.swing.JFrame {
         jLabel7.setText("Por caja de ahorro:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 260, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton1.setText("Borrar");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, 80, 30));
+        cmdBorrar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmdBorrar.setText("Borrar");
+        cmdBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBorrarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cmdBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 148, 80, 30));
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton2.setText("Calcular");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 80, 30));
+        cmdCalcular.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmdCalcular.setText("Calcular");
+        cmdCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdCalcularActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cmdCalcular, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 98, 80, 30));
 
         txtMontoT.setEditable(false);
-        jPanel1.add(txtMontoT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 220, 30));
+        jPanel1.add(txtMontoT, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 220, 30));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel9.setText("MONTO TOTAL:");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,6 +136,53 @@ public class Principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmdBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarActionPerformed
+        // TODO add your handling code here:
+        txtSueldo.setText("");
+        txtMontoT.setText("");
+        txtDescSegS.setText("");
+        txtDescSegF.setText("");
+        txtDescLey.setText("");
+        txtDescCaja.setText("");
+    }//GEN-LAST:event_cmdBorrarActionPerformed
+
+    private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
+        // TODO add your handling code here:
+        if (txtSueldo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite el sueldo", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtSueldo.requestFocusInWindow();
+        }
+        else if (txtSueldo.getText().equals(".")) {
+            JOptionPane.showMessageDialog(this, "No puede operar puntos", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            double sueldo, descSegS, descSegF, descLey, descCaja, montoT;
+            sueldo = Double.parseDouble(txtSueldo.getText());
+            descLey = sueldo * 0.01;
+            descSegS = sueldo * 0.04;
+            descSegF = sueldo * 0.005;
+            descCaja = sueldo * 0.05;
+            montoT = sueldo - (descLey + descSegS+ descSegF + descCaja);
+            txtDescLey.setText(""+descLey);
+            txtDescSegS.setText(""+descSegS);
+            txtDescSegF.setText(""+descSegF);
+            txtDescCaja.setText(""+descCaja);
+            txtMontoT.setText(""+montoT);
+        }
+    }//GEN-LAST:event_cmdCalcularActionPerformed
+
+    private void txtSueldoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSueldoKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar(); 
+        if(!Character.isDigit(c) && c != '.') { 
+              getToolkit().beep(); 
+              evt.consume(); 
+        }
+        if (c == '.' && txtSueldo.getText().contains(".")) {
+            evt.consume(); 
+        }
+    }//GEN-LAST:event_txtSueldoKeyTyped
 
     /**
      * @param args the command line arguments
@@ -155,8 +220,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton cmdBorrar;
+    private javax.swing.JButton cmdCalcular;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
