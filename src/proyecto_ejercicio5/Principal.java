@@ -145,6 +145,7 @@ public class Principal extends javax.swing.JFrame {
         txtDescSegF.setText("");
         txtDescLey.setText("");
         txtDescCaja.setText("");
+        txtSueldo.requestFocusInWindow();
     }//GEN-LAST:event_cmdBorrarActionPerformed
 
     private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
@@ -155,6 +156,8 @@ public class Principal extends javax.swing.JFrame {
         }
         else if (txtSueldo.getText().equals(".")) {
             JOptionPane.showMessageDialog(this, "No puede operar puntos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtSueldo.setText("");
+            txtSueldo.requestFocusInWindow();
         }
         else {
             double sueldo, descSegS, descSegF, descLey, descCaja, montoT;
